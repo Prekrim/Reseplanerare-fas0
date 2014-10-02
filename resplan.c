@@ -4,17 +4,20 @@
 
 typedef struct path{
   int value;
-  struct stop *north;
-  struct stop *south;
+  struct stop *node1;
+  struct stop *node2;
 } *Path;
 
-typedef struct stop{
+typedef struct node{
   char* name;
-  path numberOfPaths[sizeof(struct path) + 9]
+  int c;
+  Path numberOfPaths[c];
   
-} *Stop;
+} *Node;
 
 int main (int argc, char* argv[]){
   printf("This program does nothing, yet!\n");
-
+  
+  
+  
 }
