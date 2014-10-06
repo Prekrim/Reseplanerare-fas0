@@ -1,6 +1,8 @@
+FLAGS = gcc -std=c99 -ggdb -Wall
 
-resplan: resplan.c
-	gcc -std=c99 -ggdb -Wall -o resplan resplan.c
+
+resplan: resplan.c myListModule.h
+	$(FLAGS) -o resplan resplan.c
 
 run: 
 	./resplan
