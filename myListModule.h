@@ -23,4 +23,7 @@ void* getData(ListNode node);
 void setData(ListNode node, void* newData);
 void clearNode(ListNode node);
 ListNode prevNode(List list, ListNode searchNode);
+
+
+
 #endif
