@@ -23,19 +23,6 @@ void addNode(List list, void *data){
     ListNode newNode = malloc(sizeof(struct listNode));
     newNode->data = data;
 
-    //newNode->data = malloc(sizeof(void*));
-    //INTRESSANTPROBLEM
-    /*Jag vill sätta in innehållet i *data som är en voidpekare
-      på en nymallocerad minnesplats...*/
-    
-    /*Metod 1 - skicka med något som avgör datatyp och sätt
-      cases för att casta voidpekare till denna typ:
-      *((int*)(newNode->data)) = *((int*)data);
-      ((char* *)(newNode->data)) = *((char* *)data);
-      ((char*)(newNode->data)) = *((char*)data);
-      etc...
-      Blir dock väldigt långt
-    */
     if(list->first == NULL){
       list->first = newNode;
       list->last = newNode;
@@ -119,4 +106,25 @@ ListNode prevNode(List list, ListNode searchNode){
     return prev;
   }
   return NULL;
+
 }
+
+ListNode getNodeAtIndex(List list, int index){ // Is 0-indexed
+  ListNode node = list->first;
+  if(node->next != NULL){
+    for(int counter = 0; counter < index; counter++){
+      node = node->next;
+    }
+    return node;
+  }
+  return node;
+}
+/*
+void listIterator(List list, (void (foo*)(int))){
+  ListNode node = list->first;
+  while(node != NULL){
+    function(node);
+    node = node->next;
+  }
+}
+*/
