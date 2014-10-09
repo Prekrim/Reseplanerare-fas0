@@ -1,7 +1,7 @@
-$FLAGS= -std=c99 -ggdb -Wall
+$FLAGS= -ggdb -Wall
 
 resplan: resplan.c myListModule.o
-	gcc $(FLAGS) myListModule.o -o resplan resplan.c
+	gcc $(FLAGS) -std=c99 myListModule.o -o resplan resplan.c
 
 myListModule.o: myListModule.c
 	gcc -std=c99 -ggdb -Wall -c myListModule.c

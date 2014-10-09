@@ -8,7 +8,7 @@ typedef struct gNode *GraphNode;
 typedef struct path *Path;
 void readLine(char* dest, int n, FILE *source);
 void allRoutes();
-void linkGraphNodes(GraphNode one, GraphNode two);
+void linkGraphNodes(GraphNode one, GraphNode two, int travel_time, char* line);
 GraphNode findGraphGraphNode(GraphNode map, char *key);
 Path createPath(int travel_time, char* line, GraphNode node);
 
@@ -30,7 +30,7 @@ GraphNode findGraphNode(GraphNode map, char* key){
   return map;
 }
 
-/*
+
 // Deletes a node
 void deleteGraphNode(){
 
@@ -40,13 +40,17 @@ void deleteGraphNode(){
 void deletePath(){
 
 }
-*/
+
 // Adds node one to the list of adjecent nodes of node two and vice versa 
 void linkGraphNodes(GraphNode one, GraphNode two, int travel_time, char* line){
+  
+  //Create the desired paths to and from each node
   Path fromOne = createPath(travel_time, line, two);
   Path fromTwo = createPath(travel_time, line, one);
-  one->paths = addListNode(paths, fromOne);
-  two->paths = addListNode(paths, fromTwo);
+
+  // Assign the paths to each node
+  addNode(one->paths, fromOne);
+  addNode(two->paths, fromTwo);
 }
 
 // Returns a node with the name newName
@@ -71,23 +75,26 @@ List getPaths(GraphNode node){
 }
 
 List findAllRoutes(GraphNode start, GraphNode end, List searched, List allSearchPaths){
-  
+  /*
   if (findListNode(searched, start->name, 0) != NULL){
     return NULL;
     }
- 
+  */
   // Extract all paths from the start node
   List allPaths = getPaths(start);
 
-  if (currentPaths == NULL){return NULL;}
-
   // Add the name of this node the the list of searched nodes
-  searched = addListNode(searched, start->name);
+  char* name = start->name;
+  searched = addNode(searched, name);
   
-  int length = listLength(allPaths)
-  for (i = 0; i < length; i++) {
+  int length = listLength(allPaths);
+  for (int i = 0; i < length; i++) {
+    // Extract the desired path
     Path currentPath = getListNodeAtIndex(i, allPaths);
-    int time = currentPath->travelTime;
+    
+    // Create a new graph node which only contains the desired path
+    List newPathList = createList(); // Creates a new list
+    addNode(newPathList, currentPath); // Add the path to the list
     GraphNode newGraphNode = createGraphNode(start->name, currentPath);
     
     allSearchPaths = addListNode(allSearchPaths, 
