@@ -2,10 +2,10 @@
 #define MYLISTMODULE_H
 
 typedef struct list *List;
-typedef struct node *Node;
+typedef struct gNode *GraphNode;
 
 List createList();
-List addNode(List list, Node node);
+List addListNode(List list, void* data);
 List deleteNode();
 void deleteList();
 void* getval(); 

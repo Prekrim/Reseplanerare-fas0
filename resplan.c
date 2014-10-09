@@ -4,54 +4,133 @@
 #include <string.h>
 
 // Funktion prototypes
-typedef struct node *Node;
-typedef struct path *path;
+typedef struct gNode *GraphNode;
+typedef struct path *Path;
 void readLine(char* dest, int n, FILE *source);
 void allRoutes();
-void linkNodes(Node one, Node two);
-Node findNode(Node map, char *key);
+void linkGraphNodes(GraphNode one, GraphNode two);
+GraphNode findGraphGraphNode(GraphNode map, char *key);
+Path createPath(int travel_time, char* line, GraphNode node);
 
 typedef struct path{
-  int weight;
+  int travel_time;
   char* line;
-  struct node *node1;
-  struct node *node2;
+  struct gNode *node;
+  //struct node *node2;
 } *Path;
 
-typedef struct node{
+typedef struct gNode{
   char* name;
   List paths;
-} *Node;
+} *GraphNode;
 
 // Returns a node that is reachable from map
-Node findNode(Node map, char* key){
+GraphNode findGraphNode(GraphNode map, char* key){
 
   return map;
 }
 
-// Returns the node connected by 'path' to the node contianing the key 'key'
-Node adjacentNode(Path path, char* key){
-  Node node1 = path->node1;
-  Node node2 = path->node2;
-  if (node1 == NULL && node2 == NULL){return NULL;}
-  if (node1 != NULL || node1->name == key){return node2;}
-  if (node2 != NULL || node2->name == key){return node1;}
-  else{return NULL;}
-}
 /*
-// Find all adjecent nodes to the input node
-List getPaths(Node node){
-  List paths = node->paths;
-  List nodes = NULL;
-  char* key = node->name;
-  while(paths != NULL){
-    
-    Node foundNode = adjacentNode(paths, key);
-    nodes = addNode(nodes, foundNode);
-  }
-  return nodes;
+// Deletes a node
+void deleteGraphNode(){
+
+}
+
+// Deletes a path
+void deletePath(){
+
 }
 */
+// Adds node one to the list of adjecent nodes of node two and vice versa 
+void linkGraphNodes(GraphNode one, GraphNode two, int travel_time, char* line){
+  Path fromOne = createPath(travel_time, line, two);
+  Path fromTwo = createPath(travel_time, line, one);
+  one->paths = addListNode(paths, fromOne);
+  two->paths = addListNode(paths, fromTwo);
+}
+
+// Returns a node with the name newName
+GraphNode createGraphNode(char* newName, List paths){
+  GraphNode newGraphNode = malloc(sizeof(struct gNode));
+  newGraphNode->paths = paths;
+  newGraphNode->name = newName;
+  return newGraphNode;
+}
+
+// Returns the node connected by 'path' to the node contianing the name 'key'
+GraphNode adjacentGraphNode(Path path){
+  return (path->node);
+}
+
+
+
+// Returns a list with all nodes adjacent to the input node
+List getPaths(GraphNode node){
+  List paths = node->paths;
+  return paths;
+}
+
+List findAllRoutes(GraphNode start, GraphNode end, List searched, List allSearchPaths){
+  
+  if (findListNode(searched, start->name, 0) != NULL){
+    return NULL;
+    }
+ 
+  // Extract all paths from the start node
+  List allPaths = getPaths(start);
+
+  if (currentPaths == NULL){return NULL;}
+
+  // Add the name of this node the the list of searched nodes
+  searched = addListNode(searched, start->name);
+  
+  int length = listLength(allPaths)
+  for (i = 0; i < length; i++) {
+    Path currentPath = getListNodeAtIndex(i, allPaths);
+    int time = currentPath->travelTime;
+    GraphNode newGraphNode = createGraphNode(start->name, currentPath);
+    
+    allSearchPaths = addListNode(allSearchPaths, 
+  }
+
+  findAllRoutes();
+  
+  return currentPaths;
+}
+
+List getFastestRoute(GraphNode start, GraphNode end){
+  // Get all nodes adjacent to the starting node
+
+  // Recursively walk down the "tree" and assign travel time to the paths to find the shortest one
+  /*
+    Spara in varje {restid och nod} = path i en lista för varje rek.
+    t.ex ((pollacks, 10), (slottet, 5))
+
+    När någon når slutstationen sparar vi in det i en lista.
+    Ligger det redan någonting där kollar vi restiden.
+    Spara listan med minst restid.
+
+    Kolla nuvarande restid mot slutlistan:
+    Slutlistan == NULL (ingen gren har nått slutet än) -> gör inget
+    Slutlistans restid < nuvarande restid -> avbryt rekursionen
+    Slutlistans restid = nuvarande && vi har nått målet -> avbryt
+    (annars)Slutlistans restid > nuvarande -> fortsätt (gör inget)
+    
+    int size = sizeOfList(searchTree);
+
+    for (i = 0; i < size; i++) {
+    getFastestRoute("första noden i listan", end);
+    första noden i listan = andra noden i listan
+    }
+
+  
+  
+  */
+  // Return a list with the nodes in the shortest path
+  List routes = NULL;
+  return routes;
+}
+
 
 // Adds the string in source to dest
 void readLine(char* dest, int n, FILE *source){
@@ -62,21 +141,21 @@ void readLine(char* dest, int n, FILE *source){
 }
 
 // Prints all routes between two given nodes
-void allRoutes(Node map){
+void allRoutes(GraphNode map){
   char buffer[128];
-  Node start = NULL;
-  Node end = NULL;
+  GraphNode start = NULL;
+  GraphNode end = NULL;
   
   puts("");
   puts("Where do you want to travel from?");
   printf("? ");
   readLine(buffer, 128, stdin);
-  start = findNode(map, buffer);
+  start = findGraphNode(map, buffer);
   
   if (start != NULL){
     puts("Where do you want travle to?");
     readLine(buffer, 128, stdin);
-    end = findNode(map, buffer);
+    end = findGraphNode(map, buffer);
   }
   
   if (end != NULL){
@@ -90,18 +169,6 @@ void allRoutes(Node map){
   }
 }
 
-// Returns a node with the name newName
-Node createNode(char* newName){
-  Node newNode = malloc(sizeof(struct node));
-  newNode->paths = NULL;
-  newNode->name = newName;
-  return newNode;
-}
-
-// Adds node one to the list of adjecent nodes of node two and vice versa 
-void linkNodes(Node one, Node two){
-
-}
 
 // Prints the GUI on the screen and returns the desired numeric option.
 int chooseIndex(){
@@ -135,7 +202,7 @@ int main (int argc, char* argv[]){
   puts("Welcome to Uppsala travel planner");
   
   // Initialize the node map
-  Node map = NULL;
+  GraphNode map = NULL;
   
   int choice = chooseIndex();
   
@@ -157,14 +224,13 @@ int main (int argc, char* argv[]){
       puts("This is case 3");
       break;
 
-    case 0:
-      puts("Good bye!");
-
     default:
       puts("Could not parse choice, please try again");
       break;
     }
     choice = chooseIndex();
   }
+  if (choice == 0)
+      puts("Good bye!");
   return 0;
 }
