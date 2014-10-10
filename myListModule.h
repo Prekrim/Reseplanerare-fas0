@@ -9,21 +9,23 @@
   list data
   (C) Oliver Stein 2014
   Use at own risk! ;)
- */
+*/
 
 typedef struct list *List;
 typedef struct listNode *ListNode;
 
 List createList();
-void addNode(List list, void *data);
-ListNode findNode(List list, void* searchData, int *found);
-void deleteNode(List list, ListNode target);
+void addListNode(List list, void *data);
+ListNode findListNode(List list, void* searchData, int *found);
+void deleteListNode(List list, ListNode target);
 void deleteList(List list);
 void* getData(ListNode node); 
 void setData(ListNode node, void* newData);
-void clearNode(ListNode node);
-ListNode prevNode(List list, ListNode searchNode);
-
-
+void clearListNode(ListNode node);
+ListNode prevListNode(List list, ListNode searchNode);
+ListNode getListNodeAtIndex(List list, int index); //Is 0-indexed
+ListNode getLastListNode(List list);
+ListNode getFirstListNode(List list);
+int listLength(List list);
 
 #endif
