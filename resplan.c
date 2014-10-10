@@ -2,140 +2,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "graph.h"
 
-// Funktion prototypes
-typedef struct gNode *GraphNode;
-typedef struct path *Path;
+
+// Function prototypes
 void readLine(char* dest, int n, FILE *source);
-void allRoutes();
-void linkGraphNodes(GraphNode one, GraphNode two, int travel_time, char* line);
-GraphNode findGraphGraphNode(GraphNode map, char *key);
-Path createPath(int travel_time, char* line, GraphNode node);
-
-typedef struct path{
-  int travel_time;
-  char* line;
-  struct gNode *node;
-  //struct node *node2;
-} *Path;
-
-typedef struct gNode{
-  char* name;
-  List paths;
-} *GraphNode;
-
-// Returns a node that is reachable from map
-GraphNode findGraphNode(GraphNode map, char* key){
-
-  return map;
-}
-
-
-// Deletes a node
-void deleteGraphNode(){
-
-}
-
-// Deletes a path
-void deletePath(){
-
-}
-
-// Adds node one to the list of adjecent nodes of node two and vice versa 
-void linkGraphNodes(GraphNode one, GraphNode two, int travel_time, char* line){
-  
-  //Create the desired paths to and from each node
-  Path fromOne = createPath(travel_time, line, two);
-  Path fromTwo = createPath(travel_time, line, one);
-
-  // Assign the paths to each node
-  addNode(one->paths, fromOne);
-  addNode(two->paths, fromTwo);
-}
-
-// Returns a node with the name newName
-GraphNode createGraphNode(char* newName, List paths){
-  GraphNode newGraphNode = malloc(sizeof(struct gNode));
-  newGraphNode->paths = paths;
-  newGraphNode->name = newName;
-  return newGraphNode;
-}
-
-// Returns the node connected by 'path' to the node contianing the name 'key'
-GraphNode adjacentGraphNode(Path path){
-  return (path->node);
-}
-
-
-
-// Returns a list with all nodes adjacent to the input node
-List getPaths(GraphNode node){
-  List paths = node->paths;
-  return paths;
-}
-
-List findAllRoutes(GraphNode start, GraphNode end, List searched, List allSearchPaths){
-  /*
-  if (findListNode(searched, start->name, 0) != NULL){
-    return NULL;
-    }
-  */
-  // Extract all paths from the start node
-  List allPaths = getPaths(start);
-
-  // Add the name of this node the the list of searched nodes
-  char* name = start->name;
-  searched = addNode(searched, name);
-  
-  int length = listLength(allPaths);
-  for (int i = 0; i < length; i++) {
-    // Extract the desired path
-    Path currentPath = getListNodeAtIndex(i, allPaths);
-    
-    // Create a new graph node which only contains the desired path
-    List newPathList = createList(); // Creates a new list
-    addNode(newPathList, currentPath); // Add the path to the list
-    GraphNode newGraphNode = createGraphNode(start->name, currentPath);
-    
-    allSearchPaths = addListNode(allSearchPaths, 
-  }
-
-  findAllRoutes();
-  
-  return currentPaths;
-}
-
-List getFastestRoute(GraphNode start, GraphNode end){
-  // Get all nodes adjacent to the starting node
-
-  // Recursively walk down the "tree" and assign travel time to the paths to find the shortest one
-  /*
-    Spara in varje {restid och nod} = path i en lista för varje rek.
-    t.ex ((pollacks, 10), (slottet, 5))
-
-    När någon når slutstationen sparar vi in det i en lista.
-    Ligger det redan någonting där kollar vi restiden.
-    Spara listan med minst restid.
-
-    Kolla nuvarande restid mot slutlistan:
-    Slutlistan == NULL (ingen gren har nått slutet än) -> gör inget
-    Slutlistans restid < nuvarande restid -> avbryt rekursionen
-    Slutlistans restid = nuvarande && vi har nått målet -> avbryt
-    (annars)Slutlistans restid > nuvarande -> fortsätt (gör inget)
-    
-    int size = sizeOfList(searchTree);
-
-    for (i = 0; i < size; i++) {
-    getFastestRoute("första noden i listan", end);
-    första noden i listan = andra noden i listan
-    }
-
-  
-  
-  */
-  // Return a list with the nodes in the shortest path
-  List routes = NULL;
-  return routes;
+GraphNode findGraphNode(GraphNode map, char *key){
+return map;
 }
 
 
@@ -146,6 +19,7 @@ void readLine(char* dest, int n, FILE *source){
   if(dest[len-1] == '\n'){
     dest[len-1] = '\0';}
 }
+
 
 // Prints all routes between two given nodes
 void allRoutes(GraphNode map){
@@ -158,7 +32,7 @@ void allRoutes(GraphNode map){
   printf("? ");
   readLine(buffer, 128, stdin);
   start = findGraphNode(map, buffer);
-  
+          
   if (start != NULL){
     puts("Where do you want travle to?");
     readLine(buffer, 128, stdin);
