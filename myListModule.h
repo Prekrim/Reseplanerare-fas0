@@ -11,16 +11,6 @@
   Use at own risk! ;)
 */
 
-
-//typedef struct gNode *GraphNode;
-
-/*
-List addListNode(List list, void* data);
-void* getval(); 
-void* getkey();
-void setVal();
-void setKey(); 
-*/
 typedef struct listNode *ListNode;
 typedef struct list *List;
 
