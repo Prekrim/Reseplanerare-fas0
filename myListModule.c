@@ -46,6 +46,10 @@ ListNode findListNode(List list, void* searchData, int *found){
   return targetNode;
 }
 
+void* findElement(List list, void* searchData, int *found){
+  return (findListNode(list, searchData, found))->data;
+}
+
 void deleteListNode(List list, ListNode target){
   if(target != NULL && list != NULL){
     ListNode prev = prevListNode(list, target);
@@ -119,13 +123,24 @@ ListNode getListNodeAtIndex(List list, int index){ // Is 0-indexed
   return node;
 }
 
+void* getElementAtIndex(List list, int index){
+  return (getListNodeAtIndex(list, index))->data;
+}
+
 ListNode getLastListNode(List list){
   return list->last;
 }
 
+void* getLastElement(List list){
+  return (list->last)->data;
+}
 
 ListNode getFirstListNode(List list){
   return list->first;
+}
+
+void* getFirstElement(List list){
+  return (list->first)->data;
 }
 
 int listLength(List list){
