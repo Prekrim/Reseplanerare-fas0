@@ -24,13 +24,13 @@ GraphNode findGraphNode(GraphNode map, char* key){
 
 
 // Deletes a node
-void deleteGraphNode(){
+void deleteGraphNode(GraphNode map, GraphNode target){
 
 }
 
 // Deletes a path
-void deletePath(){
-
+void deletePath(Path path){
+  free(path);
 }
 
 // Create a path
@@ -60,6 +60,7 @@ GraphNode createGraphNode(char* newName, List paths){
   GraphNode newGraphNode = malloc(sizeof(struct gNode));
   newGraphNode->paths = paths;
   newGraphNode->name = newName;
+  return newGraphNode;
 }
 
 // Returns the node connected by 'path' to the node contianing the name 'key'

@@ -7,10 +7,14 @@
 
 // Function prototypes
 void readLine(char* dest, int n, FILE *source);
+void allRoutes(GraphNode map);
+int chooseIndex(){
+
+
+
 GraphNode findGraphNode(GraphNode map, char *key){
 return map;
 }
-
 
 // Adds the string in source to dest
 void readLine(char* dest, int n, FILE *source){
@@ -19,7 +23,6 @@ void readLine(char* dest, int n, FILE *source){
   if(dest[len-1] == '\n'){
     dest[len-1] = '\0';}
 }
-
 
 // Prints all routes between two given nodes
 void allRoutes(GraphNode map){
@@ -84,6 +87,9 @@ int main (int argc, char* argv[]){
   
   // Initialize the node map
   GraphNode map = NULL;
+  //GraphNode map = createMap();
+
+
   
   int choice = chooseIndex();
   
