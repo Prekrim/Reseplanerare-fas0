@@ -5,6 +5,8 @@
 #include "graph.h"
 
 
+
+
 // Function prototypes
 void readLine(char* dest, int n, FILE *source);
 GraphNode findGraphNode(GraphNode map, char *key){
@@ -20,6 +22,51 @@ void readLine(char* dest, int n, FILE *source){
     dest[len-1] = '\0';}
 }
 
+// Parses input string into a list of elements separated by commas in the string
+List parseBusInfo(char *string, List result){
+  if(*string != '\0' && *string != '\n'){
+    char buffer[128];
+    char c = string[0];
+    for (int i = 0; c != ',' && c != '\n'; i++) {
+      buffer[i] = string[i];
+      c = string[i+1];
+      buffer[i+1] = '\0';
+    }
+    
+    char *stringAfterFirstComma = strchr(string, ',');
+    if (stringAfterFirstComma){
+      stringAfterFirstComma = &(stringAfterFirstComma[2]);
+      addListNode(result, &buffer);
+      parseBusInfo(stringAfterFirstComma, result);
+    } else {
+      addListNode(result, string);
+    }
+  }
+  return result;
+}
+
+// Returns a GraphNode map with the bus network from file "filename"
+GraphNode createBusMap(char* filename){
+  char *busLine = malloc(128);
+  char *stationName = malloc(128);
+  char *destination = malloc(128);
+  int *travelTime = malloc(sizeof(int)); 
+  
+  /*
+  
+  while(!(feof(busNetwork))){
+      readLine(lineRead, 128, busNetwork);
+      for (int i = 0; c != *lineReadFromComma; i++) {
+	buffer[i] = lineRead[i];
+	c = lineRead[i+1];
+	[i+1] = '\0';
+      }
+      strcmp(busLine, buffer);
+      
+      
+    }
+  */
+}
 
 // Prints all routes between two given nodes
 void allRoutes(GraphNode map){
@@ -34,7 +81,7 @@ void allRoutes(GraphNode map){
   start = findGraphNode(map, buffer);
           
   if (start != NULL){
-    puts("Where do you want travle to?");
+    puts("Where do you want travel to?");
     readLine(buffer, 128, stdin);
     end = findGraphNode(map, buffer);
   }
@@ -67,12 +114,12 @@ int chooseIndex(){
 }
 
 int main (int argc, char* argv[]){
-  /*
+  
     if (argc < 2){
     puts("Usage: resplan [FILE]");
     return -1;
   }
-  */
+  
   puts("");
   puts("  _______   ______");
   puts(" |__   __| |  __  |");
@@ -83,8 +130,21 @@ int main (int argc, char* argv[]){
   puts("Welcome to Uppsala travel planner");
   
   // Initialize the node map
+  //FILE *busNetwork = fopen(argv[1], "r");
+  char *testString = "110, Polacksbacken, Grundstugan, 4";
+  //readLine(testString, 128, busNetwork);
   GraphNode map = NULL;
-  
+  List result = createList();
+  parseBusInfo(testString, result);
+  printf("%s\n", (char *)getElementAtIndex(result, 0));
+  printf("%s\n", (char *)getElementAtIndex(result, 1));
+  printf("%s\n", (char *)getElementAtIndex(result, 2));
+  printf("%s\n", (char *)getElementAtIndex(result, 3));
+
+  for (int j = 0; j < listLength(result); j++) {
+    printf("List element %d is %s\n", j, (char *)getElementAtIndex(result, j));
+  }
+
   int choice = chooseIndex();
   
   while (choice != 0){

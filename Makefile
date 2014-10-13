@@ -1,4 +1,4 @@
-$FLAGS= -ggdb -Wall
+$FLAGS= -ggdb -Wall 
 
 resplan: resplan.c myListModule.o graph.o
 	gcc $(FLAGS) -std=c99 myListModule.o -o resplan resplan.c
@@ -10,6 +10,6 @@ graph.o: graph.c
 	gcc $(FLAGS) -std=c99 -c graph.c
 
 run: 
-	./resplan
+	./resplan nätverk.txt
 
 .PHONY: run
