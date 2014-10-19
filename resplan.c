@@ -4,19 +4,10 @@
 #include <string.h>
 #include "graph.h"
 
-
-
-
 // Function prototypes
 void readLine(char* dest, int n, FILE *source);
-void allRoutes(GraphNode map);
+void allRoutes(List map);
 int chooseIndex();
-
-
-
-GraphNode findGraphNode(GraphNode map, char *key){
-return map;
-}
 
 // Adds the string in source to dest
 void readLine(char* dest, int n, FILE *source){
@@ -25,8 +16,6 @@ void readLine(char* dest, int n, FILE *source){
   if(dest[len-1] == '\n'){
     dest[len-1] = '\0';}
 }
-
-
 
 // Parses input string into a list of elements separated by commas in the string
 List parseBusInfo(char *string, List result){
@@ -74,8 +63,33 @@ GraphNode createBusMap(char* filename){
   */
 }
 
+typedef struct gNode{
+  char* name;
+  List paths;
+} *GraphNode;
+
+
+GraphNode Graph_map(List map, char* key){
+
+  if (map == NULL){return NULL;}
+  
+  int len = listLength(map);
+  for (int i = 0; i < len; i++) {
+    
+    GraphNode newNode = getElementAtIndex(map, i);
+    char* name = newNode->name;
+    
+    if(strcmp(key, name)){return newNode;}
+  }
+  
+  
+  return NULL;
+}
+
+
+
 // Prints all routes between two given nodes
-void allRoutes(GraphNode map){
+void allRoutes(List map){
   char buffer[128];
   GraphNode start = NULL;
   GraphNode end = NULL;
@@ -84,12 +98,12 @@ void allRoutes(GraphNode map){
   puts("Where do you want to travel from?");
   printf("? ");
   readLine(buffer, 128, stdin);
-  start = findGraphNode(map, buffer);
+  start = Graph_map(map, buffer);
           
   if (start != NULL){
     puts("Where do you want travel to?");
     readLine(buffer, 128, stdin);
-    end = findGraphNode(map, buffer);
+    end = Graph_map(map, buffer);
   }
   
   if (end != NULL){
@@ -140,7 +154,7 @@ int main (int argc, char* argv[]){
   //FILE *busNetwork = fopen(argv[1], "r");
   char *testString = "110, Polacksbacken, Grundstugan, 4";
   //readLine(testString, 128, busNetwork);
-  GraphNode map = NULL;
+  List map = NULL;
 
   List result = createList();
   parseBusInfo(testString, result);
@@ -183,4 +197,3 @@ int main (int argc, char* argv[]){
       puts("Good bye!");
   return 0;
 }
-
