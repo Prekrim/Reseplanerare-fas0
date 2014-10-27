@@ -4,7 +4,7 @@
 #include "graph.h"
 
 typedef struct path{
-  int travel_time;
+  int weight;
   char* line;
   struct gNode *node;
 } *Path;
@@ -36,14 +36,17 @@ GraphNode Graph_createNode(char* newName, List paths){
   return newGraphNode;
 }
 
-Path Graph_containsMatch(List paths, Path path){
+Path Graph_containsPathMatch(List paths, Path path){
+  if (path == NULL){return NULL;}
+  if (paths == NULL){return NULL;}
   char* key = path->line;
   int len = listLength(paths);
   
   for (int i = 0; i <= len; i++) {
     Path currentPath = getElementAtIndex(paths, i);    
+    char* cursor = currentPath->line;
     
-    if (strcmp(currentPath->line == key)){
+    if (strcmp(cursor, key)){
       return currentPath;
     }
     
@@ -52,37 +55,72 @@ Path Graph_containsMatch(List paths, Path path){
   return NULL;
 }
 
+void Graph_unlinkNodes(GraphNode target, GraphNode link){
+  
+  List targetPathList = Graph_getPaths(target);
+  List linkPathList = Graph_getPaths(link);
+  
+  // Delete target's path
+  int targetListLength = listLength(targetPathList);
+  for (int i = 0; i < targetListLength; i++) {
+    Path currentPath = getElementAtIndex(targetPathList, i);
 
+    if (currentPath->node == link){
+      deleteListNode(targetPathList, getElementAtIndex(targetPathList, i));
+    }
+  }
 
-void Graph_deleteNode(List map, GraphNode target){
-  //GraphNode node = Graph_nodeInList(map, target);
-  List paths = Graph_getPaths(node);
-  char* key = node->name;
-  List checkedPaths = createList();
+  // Delete link's path
+  int linkListLength = listLength(linkPathList);
+  for(int i = 0; i < linkListLength; i++){
+    Path currentPath = getElementAtIndex(linkPathList, i);
 
-
-  // Rebind the paths going through
-  While (paths != NULL){
-    
-    int len = listLength(paths);  
-    for (int i = 0; i <= len; i++) {
-      Path currentPath = getElementAtIndex(paths, i);
-      Path matchingPath = Graph_containsMatch(paths, currentPath);
-      if (matchingPath != NULL){
-	GraphNode link1 = Graph_adjacentNode(currentpath);
-	GraphNode link2 = Graph_adjacentNode(matchingPath);
-	
-	
-      }
-      
+    if (currentPath->node == target){
+      deleteListNode(linkPathList, getElementAtIndex(linkPathList, i));
     }
   }
   
 }
 
+void Graph_deleteNode(List map, GraphNode target){
+  //GraphNode node = Graph_nodeInList(map, target);
+  List paths = Graph_getPaths(target);
+  //char* key = target->name;
+  //List checkedPaths = createList();
 
 
+  // Rebind the paths going through
+  while (paths != NULL){
+    Path currentPath = NULL;
+    Path matchingPath = NULL;
 
+    int len = listLength(paths);  
+    for (int i = 0; i <= len; i++) {
+      currentPath = getElementAtIndex(paths, i);
+      
+      // Check if the line continues through
+      matchingPath = Graph_containsPathMatch(paths, currentPath);
+      
+      if (matchingPath != NULL){
+	// Link the two remaining nodes
+	GraphNode link1 = Graph_adjacentNode(currentPath);
+	GraphNode link2 = Graph_adjacentNode(matchingPath);
+	int link1Weight = currentPath->weight;
+	int link2Weight = matchingPath->weight;
+	int travelTime = link1Weight + link2Weight;
+	char* line = matchingPath->line;
+	Graph_linkNodes(link1, link2, travelTime, line);
+	
+	// Delete the paths to and from the deleting node
+	Graph_unlinkNodes(target, link1);
+	Graph_unlinkNodes(target, link2);
+      }
+      else{
+	GraphNode newEnd = Graph_adjacentNode(currentPath);		Graph_unlinkNodes(target, newEnd);  
+      }
+    }
+  }
+  
 
   free(target);
 }
@@ -137,9 +175,9 @@ GraphNode Graph_nodeInList(List map, GraphNode node){
 
 
 // Create a path
-Path Graph_createPath(int travel_time, char* line, GraphNode node){
+Path Graph_createPath(int weight, char* line, GraphNode node){
   Path newPath = malloc(sizeof(struct path));
-  newPath->travel_time = travel_time;
+  newPath->weight = weight;
   newPath->line = line;
   newPath->node = node;
 
@@ -198,7 +236,7 @@ int Graph_getTravelTime(GraphNode node){
   while (node != NULL){
     ListNode currentListPath = getListNodeAtIndex(node->paths, 0);
     Path currentPath = getData(currentListPath);
-    travelTime += currentPath->travel_time;
+    travelTime += currentPath->weight;
     node = Graph_adjacentNode(currentPath);
   }
   return travelTime;
